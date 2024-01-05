@@ -134,6 +134,8 @@ def show_summary():
             for event in Event.query.filter_by(date=d).all():
                 duration = float(event.duration)
                 categories[event.category] += duration
+            labels = list(categories.keys())
+            values = list(categories.values())
             plt.pie(values, labels=labels, autopct='%1.1f%%')
             plt.show() 
         
