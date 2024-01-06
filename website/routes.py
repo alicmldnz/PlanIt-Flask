@@ -129,13 +129,15 @@ def show_summary():
     if time_period == 1 :
         
         if not (Event.query.filter_by(date=d).all()):
-            return jsonify({'message': 'no events available'})
+            return jsonify({'message': 'no events available'}),400
         else:
             for event in Event.query.filter_by(date=d).all():
                 duration = float(event.duration)
                 categories[event.category] += duration
-            plt.pie(values, labels=labels, autopct='%1.1f%%')
-            plt.show() 
+            values = list(categories.values())
+            sum_of_values = sum(categories.values())    
+            for key in categories:
+                categories[key] /= sum_of_values
         
     elif time_period == 2 :
         week = d.strftime("%W")
@@ -143,13 +145,13 @@ def show_summary():
             if event.date.strftime("%Y") == year and event.date.strftime("%W") == week:
                 duration = float(event.duration)
                 categories[event.category] += duration
-        labels = list(categories.keys())
         values = list(categories.values())
+        sum_of_values = sum(categories.values())
         if values.count(0) == 5:
-            return jsonify({'message': 'no events available'})
+            return jsonify({'message': 'no events available'}),400
         else:
-            plt.pie(values, labels=labels, autopct='%1.1f%%')
-            plt.show()
+            for key in categories:
+                categories[key] /= sum_of_values
                      
                    
     elif time_period == 3 :
@@ -157,31 +159,33 @@ def show_summary():
             if event.date.strftime("%m") == month and event.date.strftime("%Y") == year:
                 duration = float(event.duration)
                 categories[event.category] += duration
-        labels = list(categories.keys())
         values = list(categories.values())
+        sum_of_values = sum(categories.values())
         if values.count(0) == 5:
-            return jsonify({'message': 'no events available'})
+            return jsonify({'message': 'no events available'}),400
         else:
-            plt.pie(values, labels=labels, autopct='%1.1f%%')
-            plt.show()
+            for key in categories:
+                categories[key] /= sum_of_values
             
     elif time_period == 4 :
         for event in Event.query.all():
             if event.date.strftime("%Y") == year:     
                 duration = float(event.duration)
                 categories[event.category] += duration
-        labels = list(categories.keys())
         values = list(categories.values())
+        sum_of_values = sum(categories.values())
+
         if values.count(0) == 5:
-            return jsonify({'message': 'no events available'})
+            return jsonify({'message': 'no events available'}),400
         else:
-            plt.pie(values, labels=labels, autopct='%1.1f%%')
-            plt.show() 
+            for key in categories:
+                categories[key] /= sum_of_values
     
     else:
-        return jsonify({'message': 'invalid number of time period'})
+        return jsonify({'message': 'invalid number of time period'}),400
 
-    return jsonify({'message': 'summary has showed'})
+    
+    return jsonify(categories),200
     
 
 @login_required
