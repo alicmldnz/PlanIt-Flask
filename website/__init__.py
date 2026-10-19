@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -8,11 +11,12 @@ from flask_migrate import Migrate
 
 def create_app():
 
+    load_dotenv()  # reads .env (see .env.example)
     app=Flask(__name__)
     CORS(app)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123123@localhost:5433/postgres'
-    app.config['SECRET_KEY']='sgdfg'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Bu satır SQLAlchemy uyarılarını engeller
     
     from .routes import main as main_routes

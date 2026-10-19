@@ -1,7 +1,10 @@
-__pycache__
-.vscode
-instance
-myenv
-.idea
-migrations
-**/.DS_Store
+__pycache__/
+*.pyc
+.env
+.venv/
+myenv/
+instance/
+migrations/
+.vscode/
+.idea/
+.DS_Store

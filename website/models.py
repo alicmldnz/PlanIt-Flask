@@ -3,7 +3,6 @@ from .extensions import db,bcrypt
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
-import matplotlib.pyplot as plt
 
 class User(db.Model, UserMixin):
     __tablename__="users"
@@ -44,16 +43,3 @@ class Session(db.Model):
 @property
 def is_active(self):
     return datetime.utcnow() < self.expires_at
-     
-
-def summary_calculation(categories):
-    labels = list(categories.keys())
-    values = list(categories.values())
-    if values.count(0) == 5:
-        return jsonify({'message': 'no events available'})
-    else:
-        plt.pie(values, labels=labels, autopct='%1.1f%%')
-        plt.show()
-    
-    
-    

@@ -1,13 +1,10 @@
 from .extensions import db
 from flask import render_template, redirect, url_for, flash, request,Blueprint,jsonify,make_response,session
-from .models import User,Event,Session, summary_calculation
+from .models import User,Event,Session
 from flask_login import login_user, logout_user, current_user,login_required
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta, date
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 
 #routesa initten app geliyor 
 main=Blueprint("main", __name__)
